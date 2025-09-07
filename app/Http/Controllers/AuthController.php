@@ -20,8 +20,22 @@ class AuthController extends Controller {
             'password' => Hash::make( $data['password'] ),
         ] );
 
-        return response()->json(['message' => 'User Created Successfully', 'status'=>true]);
+        return response()->json( ['message' => 'User Created Successfully', 'status' => true] );
     }
 
+    public function login( Request $request ) {
+        $data = $request->validate( [
+            'email'    => 'required|email',
+            'password' => 'required',
+        ] );
 
+        $user = User::where( 'email', $data['email'] )->first();
+
+        if ( !$user || !Hash::check( $data['password'], $user->password ) ) {
+            return response()->json( ['message' => 'Invalid Credential', 'status' => false] );
+        }
+
+        $token = $user->createToken( 'api' )->plainTextToken;
+        return response()->json( ['token' => $token, 'status' => true] );
+    }
 }
