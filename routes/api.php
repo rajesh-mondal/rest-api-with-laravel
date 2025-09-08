@@ -14,4 +14,5 @@ Route::get( '/login', fn() => response()->json( ['message' => 'Please Login'], 4
 
 Route::middleware( ['auth:sanctum'] )->group( function () {
     Route::post( '/logout', [AuthController::class, 'logout'] );
+    Route::get( '/profile', [AuthController::class, 'profile'] );
 } );

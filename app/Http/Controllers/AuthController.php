@@ -43,4 +43,9 @@ class AuthController extends Controller {
         $request->user()->currentAccessToken()->delete();
         return response()->json( ['message' => 'Logout Successfully', 'status' => true] );
     }
+
+    public function profile( Request $request ) {
+        $user = $request->user();
+        return response()->json( ['user' => $user, 'status' => true] );
+    }
 }
