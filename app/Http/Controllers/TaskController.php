@@ -22,4 +22,29 @@ class TaskController extends Controller {
 
         return response()->json( ['message' => 'Task Created Successfully', 'status' => true, 'data' => $task] );
     }
+
+    public function TaskUpdate( Request $request, $id ) {
+        $task = Task::where( 'id', $id )
+            ->where( 'user_id', $request->user()->id )
+            ->first();
+
+        $task->update( [
+            'title'       => $request->input( 'title' ),
+            'description' => $request->input( 'description' ),
+            'status'      => $request->input( 'status' ),
+            'priority'    => $request->input( 'priority' ),
+        ] );
+
+        return response()->json( ['message' => 'Task Updated Successfully', 'status' => true, 'data' => $task] );
+    }
+
+    public function TaskDelete( Request $request, $id ) {
+        $task = Task::where( 'id', $id )
+            ->where( 'user_id', $request->user()->id )
+            ->first();
+
+        $task->delete();
+
+        return response()->json( ['message' => 'Task Deleted Successfully', 'status' => true, 'data' => $task] );
+    }
 }
