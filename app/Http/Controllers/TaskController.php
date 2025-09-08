@@ -47,4 +47,16 @@ class TaskController extends Controller {
 
         return response()->json( ['message' => 'Task Deleted Successfully', 'status' => true, 'data' => $task] );
     }
+
+    public function TaskSummary( Request $request ) {
+        $task = Task::where( 'user_id', $request->user()->id )->get();
+
+        $summary = [
+            'total'       => $task->count(),
+            'by_status'   => $task->groupBy( 'status' )->map->count(),
+            'by_priority' => $task->groupBy( 'priority' )->map->count(),
+        ];
+
+        return response()->json( ['message' => 'Task Summary Displayed', 'status' => true, 'data' => $summary] );
+    }
 }
