@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,4 +16,10 @@ Route::get( '/login', fn() => response()->json( ['message' => 'Please Login'], 4
 Route::middleware( ['auth:sanctum'] )->group( function () {
     Route::post( '/logout', [AuthController::class, 'logout'] );
     Route::get( '/profile', [AuthController::class, 'profile'] );
+} );
+
+// Task Manager API : After Login
+Route::middleware( ['auth:sanctum'] )->group( function () {
+    Route::post( '/tasks/list', [TaskController::class, 'TaskList'] );
+    Route::post( '/tasks/create', [TaskController::class, 'TaskCreate'] );
 } );
